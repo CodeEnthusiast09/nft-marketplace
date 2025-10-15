@@ -23,16 +23,16 @@ export const Navbar = () => {
     <header className="bg-background w-full flex items-center justify-between lg:px-[50px] lg:pt-2.5 lg:pb-2.5 xl:px-[165px]">
       {/* Logo */}
 
-      <Link href="/" className="flex items-center gap-2">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-500">
-          <TbHexagons size={32} className="text-primary-100" />
+      <Link href="/" className="flex items-center gap-2 pl-4 py-2.5">
+        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-500">
+          <TbHexagons size={40} className="text-primary-100" />
         </div>
-        <span className="text-xl font-semibold">Hex NFT Marketplace</span>
+        <span className="text-xl font-semibold text-nowrap">HexSea</span>
       </Link>
 
       {/* Mobile devices */}
       <div className="flex items-center gap-4 lg:hidden">
-        <Button variant="neutral" onClick={toggleNav}>
+        <Button variant="ghost" onClick={toggleNav}>
           <AnimatePresence mode="wait" initial={false}>
             {showNav ? (
               <motion.div
@@ -42,7 +42,7 @@ export const Navbar = () => {
                 exit={{ rotate: 90, opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <FaTimes className="text-3xl text-background" />
+                <FaTimes className="text-3xl text-primary-500" />
               </motion.div>
             ) : (
               <motion.div
@@ -52,7 +52,7 @@ export const Navbar = () => {
                 exit={{ rotate: -90, opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <RxHamburgerMenu className="text-3xl text-primary-100" />
+                <RxHamburgerMenu className="text-3xl text-primary-500" />
               </motion.div>
             )}
           </AnimatePresence>
@@ -68,18 +68,24 @@ export const Navbar = () => {
         </ul>
 
         <div className="hidden lg:flex items-center gap-5 pl-4 py-3">
-          <ConnectButton />
+          <ConnectButton
+            chainStatus={{ smallScreen: "icon", largeScreen: "icon" }}
+            showBalance={{
+              smallScreen: false,
+              largeScreen: false,
+            }}
+          />
         </div>
       </nav>
 
       {/* Mobile Navbar */}
       <div
-        className={`px-5 xl:px-6 py-6 h-screen overflow-auto w-1/2 md:w-[40vw] lg:w-[25vw] 2xl:w-[18vw] bg-background border-l border-l-primary-200 z-50 fixed lg:right-0 transition-all duration-500 top-0 ${
+        className={`px-5 xl:px-6 py-6 h-screen overflow-auto w-[75%] md:w-[40vw] lg:w-[25vw] 2xl:w-[18vw] bg-background border-l border-l-primary-200 z-50 fixed lg:right-0 transition-all duration-500 top-0 ${
           showNav ? "right-0" : " -right-[150vw]"
         } lg:hidden`}
       >
         <div className="flex items-center justify-between pb-6">
-          <Button variant="neutral" onClick={toggleNav}>
+          <Button variant="ghost" onClick={toggleNav}>
             <AnimatePresence mode="wait" initial={false}>
               {showNav ? (
                 <motion.div
@@ -90,7 +96,7 @@ export const Navbar = () => {
                   exit={{ rotate: 180, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <FaTimes className="text-3xl text-primary-100" />
+                  <FaTimes className="text-3xl text-primary-500" />
                 </motion.div>
               ) : (
                 <motion.div
@@ -100,7 +106,7 @@ export const Navbar = () => {
                   exit={{ rotate: -90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <RxHamburgerMenu className="text-3xl text-primary-100" />
+                  <RxHamburgerMenu className="text-3xl text-primary-500" />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -116,7 +122,13 @@ export const Navbar = () => {
             <hr className="h-[1px] bg-primary-200" />
 
             <div className="flex flex-col items-start gap-5">
-              <ConnectButton />
+              <ConnectButton
+                chainStatus={{ smallScreen: "icon", largeScreen: "icon" }}
+                accountStatus={{
+                  smallScreen: "address",
+                  largeScreen: "full",
+                }}
+              />
             </div>
           </ul>
         </nav>

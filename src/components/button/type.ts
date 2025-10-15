@@ -3,7 +3,8 @@ export type ButtonVariant =
   | "secondary"
   | "transparent"
   | "neutral"
-  | "danger";
+  | "danger"
+  | "ghost";
 
 export type ButtonProps = {
   onClick?: () => void;

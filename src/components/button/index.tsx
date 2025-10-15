@@ -18,15 +18,17 @@ export const Button = (props: ButtonProps) => {
 
   const variantClass = () => {
     if (variant === "primary") {
-      return "text-white bg-primary-500 hover:bg-primary-500/80 focus:outline-secondary-500";
+      return "text-white bg-primary-500 hover:bg-primary-500/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2";
     } else if (variant === "secondary") {
-      return "text-white bg-secondary-500 hover:bg-secondary-500/80 focus:outline-secondary-500";
+      return "text-white bg-secondary-500 hover:bg-secondary-500/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2";
     } else if (variant === "neutral") {
-      return "text-[#neutral] bg-neutral-400 hover:bg-neutral-400/80 focus:outline-neutral-400";
+      return "text-[#neutral] bg-neutral-400 hover:bg-neutral-400/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2";
     } else if (variant === "danger") {
-      return "text-white bg-[#FB0E0E] hover:bg-[#FB0E0E]/80 focus:outline-[#F44616]";
+      return "text-white bg-[#FB0E0E] hover:bg-[#FB0E0E]/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2";
     } else if (variant === "transparent") {
-      return "bg-transparent border border-[#D1D1D1] focus:outline-primary-500";
+      return "bg-transparent border border-[#D1D1D1] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2";
+    } else if (variant === "ghost") {
+      return "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2";
     } else {
       return "text-dark bg-white hover:bg-primary-100 border border-[#D1D1D1]";
     }
@@ -55,7 +57,7 @@ export const Button = (props: ButtonProps) => {
         radius,
         variantClass(),
         extendedClassName,
-        getPaddingFromBtnSize()
+        getPaddingFromBtnSize(),
       )}
       {...rest}
     >
