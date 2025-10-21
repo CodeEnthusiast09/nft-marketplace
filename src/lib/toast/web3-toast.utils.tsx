@@ -50,7 +50,7 @@ export const notifyTransactionPending = (
 ) => {
   const {
     title = "Transaction Pending",
-    chainId = 1,
+    chainId = 11155111,
     duration = 10000,
   } = options || {};
 
@@ -88,7 +88,7 @@ export const notifyTransactionSuccess = (
 ) => {
   const {
     title = "Transaction Successful",
-    chainId = 1,
+    chainId = 11155111,
     duration = 8000,
   } = options || {};
 
@@ -149,7 +149,7 @@ export const notifyTransactionPromise = <T extends TransactionData>(
   promise: Promise<T>,
   options?: TransactionToastOptions,
 ): Promise<T> => {
-  const { title, chainId = 1, duration } = options || {};
+  const { title, chainId = 11155111, duration } = options || {};
 
   return toast.promise(promise, {
     title,

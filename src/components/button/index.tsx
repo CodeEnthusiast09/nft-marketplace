@@ -20,7 +20,7 @@ export const Button = (props: ButtonProps) => {
     if (variant === "primary") {
       return "text-white bg-primary-500 hover:bg-primary-500/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2";
     } else if (variant === "secondary") {
-      return "text-white bg-secondary-500 hover:bg-secondary-500/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2";
+      return "text-white bg-secondary-600 hover:bg-secondary-600/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2";
     } else if (variant === "neutral") {
       return "text-[#neutral] bg-neutral-400 hover:bg-neutral-400/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2";
     } else if (variant === "danger") {

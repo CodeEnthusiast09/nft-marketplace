@@ -9,7 +9,16 @@ import { useEffect, useState } from "react";
 export function Providers({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 60 * 1000,
+          },
+        },
+      }),
+  );
 
   const appInfo = { appName: "NFT-Marketplace" };
 
@@ -25,7 +34,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
           theme={lightTheme({
-            accentColor: "#0039d9",
+            accentColor: "#201c51",
             accentColorForeground: "white",
           })}
           appInfo={appInfo}

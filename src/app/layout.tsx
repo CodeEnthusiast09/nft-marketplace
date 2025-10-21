@@ -22,7 +22,7 @@ export default function RootLayout({
         <Providers>
           <ToastProvider />
           <Navbar />
-          <main className="min-h-screen">{children}</main>
+          <main className="min-h-screen overflow-hidden">{children}</main>
         </Providers>
       </body>
     </html>

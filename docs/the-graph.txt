@@ -1,0 +1,3 @@
+the graph is an indexing protocol for querying blockchain networks like ethereum and IPFS and dozens of other EVM compatible networks. Using the graphs, devs can build and publish OPENAPIs called subgraphs so that the can use in their applications to enable better query capability for data stored on these networks.
+
+A subgraph defines how to efficiently index data in a deterministic way.
