@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { request } from "graphql-request"; // ✅ fixed import
+import { request } from "graphql-request";
 import { GET_ACTIVE_ITEM, GET_ACTIVE_ITEMS } from "@/services/graphql-queries";
-import { formatEther } from "viem";
 import { ActiveItem } from "@/interfaces/nft";
 
 const SUBGRAPH_URL = process.env.NEXT_PUBLIC_SUBGRAPH_URL as string;
@@ -23,11 +22,8 @@ export function useNFTListings() {
         GET_ACTIVE_ITEMS,
       );
 
-      // Format the data for display
-      return data.activeItems.map((item: ActiveItem) => ({
-        ...item,
-        price: formatEther(BigInt(item.price)),
-      }));
+      // Keep price as raw value (Wei) - format only in UI
+      return data.activeItems;
     },
     refetchInterval: 10000, // Refetch every 10 seconds
   });
@@ -47,10 +43,8 @@ export function useNFTListing(nftAddress: string, tokenId: string) {
 
       if (!data.activeItem) return null;
 
-      return {
-        ...data.activeItem,
-        price: formatEther(BigInt(data.activeItem.price)),
-      };
+      // Keep price as raw value (Wei) - format only in UI
+      return data.activeItem;
     },
     enabled: !!nftAddress && !!tokenId,
   });

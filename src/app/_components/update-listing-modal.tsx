@@ -1,7 +1,7 @@
 "use client";
 
 import { Modal } from "@/components/modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiEdit2 } from "react-icons/fi";
 import Image from "next/image";
 import { Input } from "@/components/input";
@@ -18,6 +18,7 @@ import { useNFTListing } from "@/hooks/useNFTListings";
 import { formatAddress } from "@/lib/utils";
 import { NFTListing } from "@/interfaces/nft";
 import { useNFTMetadata } from "@/hooks/useNFTMetadata";
+import { formatUnits } from "viem";
 
 type ListNftFormData = InferType<typeof listNftValidationSchema>;
 
@@ -34,8 +35,13 @@ export const UpdateListingModal = ({ nft }: UpdateListingModalProps) => {
     nft.tokenId,
   );
 
-  const { updateListing, cancelListing, isPending, isConfirming } =
-    useMarketplace();
+  const {
+    updateListing,
+    cancelListing,
+    isPending,
+    isConfirming,
+    NATIVE_TOKEN_ADDRESS,
+  } = useMarketplace();
 
   // Fetch current listing data from subgraph
   const { data: currentListing, isLoading: isLoadingListing } = useNFTListing(
@@ -43,19 +49,24 @@ export const UpdateListingModal = ({ nft }: UpdateListingModalProps) => {
     nft.tokenId,
   );
 
-  const currentToken =
-    currentListing?.paymentToken ===
-    "0x0000000000000000000000000000000000000000"
-      ? "ETH"
-      : "USDC";
+  const isETH =
+    (currentListing?.paymentToken || nft.paymentToken).toLowerCase() ===
+    NATIVE_TOKEN_ADDRESS.toLowerCase();
+  const currentToken = isETH ? "ETH" : "USDC";
 
-  const currentPrice = currentListing?.price || nft.price;
+  // Format current price for display
+  const currentPrice = (() => {
+    const price = currentListing?.price || nft.price;
+    const decimals = isETH ? 18 : 6;
+    return formatUnits(BigInt(price), decimals);
+  })();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<ListNftFormData>({
     resolver: yupResolver(listNftValidationSchema),
     defaultValues: {
@@ -65,6 +76,14 @@ export const UpdateListingModal = ({ nft }: UpdateListingModalProps) => {
       paymentToken: currentToken,
     },
   });
+
+  // Update form when data loads
+  useEffect(() => {
+    if (currentPrice && currentToken) {
+      setValue("price", currentPrice);
+      setValue("paymentToken", currentToken);
+    }
+  }, [currentPrice, currentToken, setValue]);
 
   const handleUpdateListing = async (data: ListNftFormData) => {
     console.log("🔹 Update clicked with:", data);
@@ -115,7 +134,7 @@ export const UpdateListingModal = ({ nft }: UpdateListingModalProps) => {
             <SkeletonWrapper isLoading={isLoading}>
               <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border-2 border-white shadow-md">
                 <Image
-                  src={imageUrl}
+                  src={imageError ? "/placeholder.svg" : imageUrl}
                   alt={`NFT #${nft.tokenId}`}
                   fill
                   className="object-cover"

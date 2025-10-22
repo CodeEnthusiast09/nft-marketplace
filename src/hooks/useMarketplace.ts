@@ -6,7 +6,7 @@ import {
   useWaitForTransactionReceipt,
   useAccount,
 } from "wagmi";
-import { parseEther } from "viem";
+import { parseEther, parseUnits } from "viem";
 import { NFT_MARKETPLACE_ABI } from "@/lib/contract-abi";
 import { useNotify } from "@/lib/toast";
 import { NATIVE_TOKEN_ADDRESS } from "@/lib/constants";
@@ -151,7 +151,11 @@ export function useMarketplace() {
     try {
       const tokenAddress =
         paymentToken === "ETH" ? NATIVE_TOKEN_ADDRESS : USDC_ADDRESS;
-      const priceInWei = parseEther(price);
+
+      // const priceInWei = parseEther(price);
+
+      const priceInWei =
+        paymentToken === "ETH" ? parseEther(price) : parseUnits(price, 6);
 
       const txPromise = writeContractAsync({
         address: MARKETPLACE_ADDRESS,
@@ -181,15 +185,55 @@ export function useMarketplace() {
     }
   };
 
+  const approveERC20 = async (
+    tokenAddress: string,
+    priceInWei: string, // Now accepts Wei value
+  ) => {
+    try {
+      const txPromise = writeContractAsync({
+        address: tokenAddress as `0x${string}`,
+        abi: [
+          {
+            inputs: [
+              { name: "spender", type: "address" },
+              { name: "amount", type: "uint256" },
+            ],
+            name: "approve",
+            outputs: [{ name: "", type: "bool" }],
+            stateMutability: "nonpayable",
+            type: "function",
+          },
+        ],
+        functionName: "approve",
+        args: [MARKETPLACE_ADDRESS, BigInt(priceInWei)],
+      }).then((hash) => ({ hash }));
+
+      await notifyTxPromise(txPromise);
+
+      notifySuccess({
+        title: "Token Approved",
+        message: "The marketplace can now spend your tokens.",
+      });
+    } catch (error) {
+      console.error("Approve error:", error);
+      notifyError({
+        title: "Approval Failed",
+        message:
+          error instanceof Error ? error.message : "Failed to approve token.",
+      });
+      throw error;
+    }
+  };
+
   const buyItem = async (
     nftAddress: string,
     tokenId: string,
     paymentToken: string,
-    price: string,
+    priceInWei: string, // Now accepts Wei value
   ) => {
     try {
       const value =
-        paymentToken === NATIVE_TOKEN_ADDRESS ? parseEther(price) : BigInt(0);
+        paymentToken === NATIVE_TOKEN_ADDRESS ? BigInt(priceInWei) : BigInt(0);
 
       const txPromise = writeContractAsync({
         address: MARKETPLACE_ADDRESS,
@@ -201,7 +245,6 @@ export function useMarketplace() {
           paymentToken as `0x${string}`,
         ],
         value,
-        gas: BigInt(3_000_000),
       }).then((hash) => ({ hash }));
 
       await notifyTxPromise(txPromise);
@@ -229,7 +272,13 @@ export function useMarketplace() {
     try {
       const tokenAddress =
         newPaymentToken === "ETH" ? NATIVE_TOKEN_ADDRESS : USDC_ADDRESS;
-      const priceInWei = parseEther(newPrice);
+
+      // const priceInWei = parseEther(newPrice);
+
+      const priceInWei =
+        newPaymentToken === "ETH"
+          ? parseEther(newPrice)
+          : parseUnits(newPrice, 6);
 
       const txPromise = writeContractAsync({
         address: MARKETPLACE_ADDRESS,
@@ -320,6 +369,7 @@ export function useMarketplace() {
   return {
     // Write functions
     listItem,
+    approveERC20,
     buyItem,
     updateListing,
     cancelListing,

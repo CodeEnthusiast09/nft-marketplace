@@ -4,7 +4,7 @@ import { Button } from "@/components/button";
 import { Select } from "@/components/select";
 import { useMarketplace } from "@/hooks/useMarketplace";
 import { useAccount } from "wagmi";
-import { formatEther } from "viem";
+import { formatUnits } from "viem";
 import { useState, useEffect } from "react";
 import { useNotify } from "@/lib/toast";
 import { PAYMENT_TOKEN_OPTIONS } from "@/lib/constants";
@@ -72,13 +72,17 @@ export const WithdrawProceedsForm = () => {
     }
   };
 
-  const formatProceeds = (proceeds: bigint | undefined): string => {
+  const formatProceeds = (
+    proceeds: bigint | undefined,
+    token: "ETH" | "USDC",
+  ): string => {
     if (!proceeds || proceeds === BigInt(0)) return "0";
-    return formatEther(proceeds);
+    const decimals = token === "ETH" ? 18 : 6;
+    return formatUnits(proceeds, decimals);
   };
 
-  const ethAmount = formatProceeds(ethProceedsBigInt);
-  const usdcAmount = formatProceeds(usdcProceedsBigInt);
+  const ethAmount = formatProceeds(ethProceedsBigInt, "ETH");
+  const usdcAmount = formatProceeds(usdcProceedsBigInt, "USDC");
   const selectedAmount = selectedToken === "ETH" ? ethAmount : usdcAmount;
 
   const isLoading = isLoadingEth || isLoadingUsdc;
