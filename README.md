@@ -72,7 +72,7 @@ npm install
 
 ### 3. Environment Variables
 
-Create a `.env` file in the root directory and add your API keys inside. The WalletConnect project ID is now required since the v2 update. You can create one easily on the [WalletConnect dashboard](https://dashboard.reown.com):
+Create a `.env` file in the root directory and add your API keys inside. The WalletConnect project ID is now required. You can create one easily on the [WalletConnect dashboard](https://dashboard.reown.com):
 
 ```env
 # The Graph Subgraph URL
