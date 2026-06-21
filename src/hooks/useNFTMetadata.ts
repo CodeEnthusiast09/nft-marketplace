@@ -1,6 +1,7 @@
 // hooks/useNFTMetadata.ts (OPTIONAL - for fetching actual NFT images/names)
 import { useQuery } from "@tanstack/react-query";
 import { useReadContract } from "wagmi";
+import { sepolia } from "wagmi/chains";
 import { BASIC_NFT_ABI } from "@/lib/contract-abi";
 
 interface NFTMetadata {
@@ -20,6 +21,7 @@ export function useNFTMetadata(nftAddress?: string, tokenId?: string) {
     abi: BASIC_NFT_ABI,
     functionName: "tokenURI",
     args: tokenId ? [BigInt(tokenId)] : undefined,
+    chainId: sepolia.id,
     query: {
       enabled: !!nftAddress && !!tokenId,
     },

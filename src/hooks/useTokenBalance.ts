@@ -1,4 +1,5 @@
 import { useReadContract, useAccount, useBalance } from "wagmi";
+import { sepolia } from "wagmi/chains";
 import { formatUnits } from "viem";
 
 const ERC20_ABI = [
@@ -26,6 +27,7 @@ export function useETHBalance() {
 
   const { data, isLoading, refetch } = useBalance({
     address: address,
+    chainId: sepolia.id,
   });
 
   // wagmi returns raw bigint `value` now — format it yourself
@@ -57,6 +59,7 @@ export function useERC20Balance(tokenAddress?: string) {
     abi: ERC20_ABI,
     functionName: "balanceOf",
     args: address ? [address] : undefined,
+    chainId: sepolia.id,
     query: {
       enabled: !!tokenAddress && !!address,
     },
@@ -66,6 +69,7 @@ export function useERC20Balance(tokenAddress?: string) {
     address: tokenAddress as `0x${string}`,
     abi: ERC20_ABI,
     functionName: "decimals",
+    chainId: sepolia.id,
     query: {
       enabled: !!tokenAddress,
     },

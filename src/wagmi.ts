@@ -81,7 +81,7 @@ const customLineaTestnet = { ...lineaTestnet, iconUrl: lineaTesnet_logo.src };
 
 const transports: Record<number, Transport> = {
   [mainnet.id]: http(),
-  [sepolia.id]: http(),
+  [sepolia.id]: http(process.env.NEXT_PUBLIC_SEPOLIA_RPC_URL),
   [arbitrum.id]: http(),
   [arbitrumGoerli.id]: http(),
   [optimism.id]: http(),

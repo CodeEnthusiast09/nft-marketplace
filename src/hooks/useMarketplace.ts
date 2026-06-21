@@ -6,6 +6,7 @@ import {
   useWaitForTransactionReceipt,
   useAccount,
 } from "wagmi";
+import { sepolia } from "wagmi/chains";
 import { parseEther, parseUnits } from "viem";
 import { NFT_MARKETPLACE_ABI } from "@/lib/contract-abi";
 import { useNotify } from "@/lib/toast";
@@ -38,6 +39,7 @@ export function useMarketplace() {
         nftAddress && tokenId
           ? [nftAddress as `0x${string}`, BigInt(tokenId)]
           : undefined,
+      chainId: sepolia.id,
       query: {
         enabled: !!nftAddress && !!tokenId,
       },
@@ -62,6 +64,7 @@ export function useMarketplace() {
               targetToken as `0x${string}`,
             ]
           : undefined,
+      chainId: sepolia.id,
       query: {
         enabled: !!nftAddress && !!tokenId && !!targetToken,
       },
@@ -85,6 +88,7 @@ export function useMarketplace() {
         sellerAddress && tokenAddress
           ? [sellerAddress as `0x${string}`, tokenAddress as `0x${string}`]
           : undefined,
+      chainId: sepolia.id,
       query: {
         enabled: !!sellerAddress && !!tokenAddress,
       },
@@ -103,6 +107,7 @@ export function useMarketplace() {
       abi: NFT_MARKETPLACE_ABI,
       functionName: "isTokenSupportedPublic",
       args: tokenAddress ? [tokenAddress as `0x${string}`] : undefined,
+      chainId: sepolia.id,
       query: {
         enabled: !!tokenAddress,
       },
@@ -116,6 +121,7 @@ export function useMarketplace() {
       abi: NFT_MARKETPLACE_ABI,
       functionName: "getTokenInfo",
       args: tokenAddress ? [tokenAddress as `0x${string}`] : undefined,
+      chainId: sepolia.id,
       query: {
         enabled: !!tokenAddress,
       },
@@ -128,6 +134,7 @@ export function useMarketplace() {
       address: MARKETPLACE_ADDRESS,
       abi: NFT_MARKETPLACE_ABI,
       functionName: "getOwner",
+      chainId: sepolia.id,
     });
   };
 
@@ -137,6 +144,7 @@ export function useMarketplace() {
       address: MARKETPLACE_ADDRESS,
       abi: NFT_MARKETPLACE_ABI,
       functionName: "NATIVE_TOKEN",
+      chainId: sepolia.id,
     });
   };
 
